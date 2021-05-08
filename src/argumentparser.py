@@ -15,7 +15,7 @@ class BaseArgumentParser:
 
     @staticmethod
     def check_path(path: str):
-        if os.path.isdir(path):
+        if os.path.isfile(path):
             return path
         else:
             raise argparse.ArgumentTypeError(f'{path} is not a valid path')
