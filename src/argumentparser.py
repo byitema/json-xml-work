@@ -47,8 +47,3 @@ class ArgumentParser(BaseArgumentParser):
         else:
             raise argparse.ArgumentTypeError(
                 f'{output_format} is not a valid output format (XML or JSON are only available)')
-
-
-if __name__ == '__main__':
-    parser = ArgumentParser()
-    print(parser.parse_arguments())

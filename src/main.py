@@ -1,7 +1,20 @@
 from argumentparser import ArgumentParser
 from jsonmerger import JSONMerger
-from entities import Student, Room, CustomEncoder
-import json
+from entities import CustomEncoder
+from serializer import JSONSerializer, XMLSerializer
+
+
+def serialize(serializable, serializer_type: str, filename):
+    serializer_type = serializer_type.lower()
+
+    if serializer_type == 'json':
+        sr = JSONSerializer()
+        sr.serialize(serializable, CustomEncoder)
+    elif serializer_type == 'xml':
+        sr = XMLSerializer()
+        sr.serialize(rooms)
+
+    sr.write(filename + '.' + serializer_type)
 
 
 if __name__ == '__main__':
@@ -10,8 +23,5 @@ if __name__ == '__main__':
 
     merger = JSONMerger(args[0], args[1])
     rooms = merger.merge()
-    print(rooms)
 
-    jsonStr = json.dumps(rooms, cls=CustomEncoder, indent=4)
-    with open('./output/rooms.json', 'w') as f:
-        f.write(jsonStr)
+    serialize(rooms, args[2], './output/rooms')

@@ -50,4 +50,5 @@ class CustomEncoder(json.JSONEncoder):
             return {'id': o.id, 'name': o.name, 'students': o.students}
         elif isinstance(o, Student):
             return {'id': o.id, 'name': o.name, 'room': o.room}
+
         return super(CustomEncoder, self).default(o)
