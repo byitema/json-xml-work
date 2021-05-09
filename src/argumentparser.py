@@ -15,7 +15,7 @@ class BaseArgumentParser:
 
     @staticmethod
     def check_path(path: str):
-        if os.path.isdir(path):
+        if os.path.isfile(path):
             return path
         else:
             raise argparse.ArgumentTypeError(f'{path} is not a valid path')
@@ -47,8 +47,3 @@ class ArgumentParser(BaseArgumentParser):
         else:
             raise argparse.ArgumentTypeError(
                 f'{output_format} is not a valid output format (XML or JSON are only available)')
-
-
-if __name__ == '__main__':
-    parser = ArgumentParser()
-    print(parser.parse_arguments())
