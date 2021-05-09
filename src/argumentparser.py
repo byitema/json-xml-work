@@ -38,7 +38,7 @@ class ArgumentParser(BaseArgumentParser):
 
     def parse_arguments(self):
         args = self.parser.parse_args()
-        return args.students, args.rooms, args.format
+        return { 'students_file': args.students, 'rooms_file': args.rooms, 'output_format': args.format}
 
     @staticmethod
     def check_output_format(output_format: str):

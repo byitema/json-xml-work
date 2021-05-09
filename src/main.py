@@ -21,7 +21,7 @@ if __name__ == '__main__':
     parser = ArgumentParser()
     args = parser.parse_arguments()
 
-    merger = JSONMerger(args[0], args[1])
+    merger = JSONMerger(args['students_file'], args['rooms_file'])
     rooms = merger.merge()
 
-    serialize(rooms, args[2], './output/rooms')
+    serialize(rooms, args['output_format'], './output/rooms')
