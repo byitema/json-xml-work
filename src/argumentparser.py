@@ -13,13 +13,6 @@ class BaseArgumentParser:
     def parse_arguments(self):
         self
 
-    @staticmethod
-    def check_path(path: str):
-        if os.path.isfile(path):
-            return path
-        else:
-            raise argparse.ArgumentTypeError(f'{path} is not a valid path')
-
 
 class ArgumentParser(BaseArgumentParser):
     def add_arguments(self):
@@ -36,6 +29,13 @@ class ArgumentParser(BaseArgumentParser):
     def parse_arguments(self):
         args = self.parser.parse_args()
         return { 'students_file': args.students, 'rooms_file': args.rooms, 'output_format': args.format}
+
+    @staticmethod
+    def check_path(path: str):
+        if os.path.isfile(path):
+            return path
+        else:
+            raise argparse.ArgumentTypeError(f'{path} is not a valid path')
 
     @staticmethod
     def check_output_format(output_format: str):
