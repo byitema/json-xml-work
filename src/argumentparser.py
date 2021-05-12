@@ -22,9 +22,6 @@ class BaseArgumentParser:
 
 
 class ArgumentParser(BaseArgumentParser):
-    def __init__(self):
-        super().__init__()
-
     def add_arguments(self):
         self.parser.add_argument('--students',
                                  help='path to the students file directory',
