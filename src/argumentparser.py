@@ -28,7 +28,7 @@ class ArgumentParser(BaseArgumentParser):
 
     def parse_arguments(self):
         args = self.parser.parse_args()
-        return { 'students_file': args.students, 'rooms_file': args.rooms, 'output_format': args.format}
+        return {'students_file': args.students, 'rooms_file': args.rooms, 'output_format': args.format.lower()}
 
     @staticmethod
     def check_path(path: str):
@@ -39,7 +39,7 @@ class ArgumentParser(BaseArgumentParser):
 
     @staticmethod
     def check_output_format(output_format: str):
-        if output_format.upper() in ('XML', 'JSON'):
+        if output_format.lower() in ('xml', 'json'):
             return output_format
         else:
             raise argparse.ArgumentTypeError(
