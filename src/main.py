@@ -1,27 +1,25 @@
 from argumentparser import ArgumentParser
 from jsonmerger import JSONMerger
-from entities import CustomEncoder
 from serializer import JSONSerializer, XMLSerializer
+from filehandler import FileHandler
 
 
-def serialize(serializable, serializer_type: str, filename):
-    serializer_type = serializer_type.lower()
-
-    if serializer_type == 'json':
-        sr = JSONSerializer()
-        sr.serialize(serializable, CustomEncoder)
-    elif serializer_type == 'xml':
-        sr = XMLSerializer()
-        sr.serialize(rooms)
-
-    sr.write(filename + '.' + serializer_type)
+output_format_serializer = {
+    'json': JSONSerializer,
+    'xml': XMLSerializer
+}
 
 
 if __name__ == '__main__':
     parser = ArgumentParser()
     args = parser.parse_arguments()
 
-    merger = JSONMerger(args['students_file'], args['rooms_file'])
-    rooms = merger.merge()
+    students_data = FileHandler.read_json(args['students_file'])
+    rooms_data = FileHandler.read_json(args['rooms_file'])
 
-    serialize(rooms, args['output_format'], './output/rooms')
+    rooms = JSONMerger.merge(students_data, rooms_data)
+
+    serialized_data = output_format_serializer[args['output_format']].serialize(rooms)
+
+    FileHandler.write(serialized_data, './output/rooms' + '.' + args['output_format'])
+

@@ -1,6 +1,3 @@
-import json
-
-
 class Student:
     def __init__(self, id: int, name: str, room: int):
         self.id = id
@@ -42,13 +39,3 @@ class WrongStudentsRoomIdError(Exception):
 
         self.message += f'this room id = {self.room}, students room id = {self.students_room}'
         super().__init__(self.message)
-
-
-class CustomEncoder(json.JSONEncoder):
-    def default(self, o):
-        if isinstance(o, Room):
-            return {'id': o.id, 'name': o.name, 'students': o.students}
-        elif isinstance(o, Student):
-            return {'id': o.id, 'name': o.name, 'room': o.room}
-
-        return super(CustomEncoder, self).default(o)

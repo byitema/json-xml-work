@@ -1,28 +1,25 @@
 import json
 import xml.etree.ElementTree as ET
 import xml.dom.minidom as minidom
+from entities import Student, Room
 
 
 class BaseSerializer:
-    def __init__(self):
-        self.data = str()
-
-    def serialize(self, serializable):
+    @staticmethod
+    def serialize(serializable):
         pass
-
-    def write(self, filename):
-        with open(filename, 'w') as f:
-            f.write(self.data)
 
 
 class JSONSerializer(BaseSerializer):
-    def serialize(self, serializable, custom_encoder=None):
+    @staticmethod
+    def serialize(serializable):
         rooms_dict = {'rooms': serializable}
-        self.data = json.dumps(rooms_dict, cls=custom_encoder, indent=4)
+        return json.dumps(rooms_dict, cls=CustomEncoder, indent=4)
 
 
 class XMLSerializer(BaseSerializer):
-    def serialize(self, serializable):
+    @staticmethod
+    def serialize(serializable):
         data = ET.Element('data')
         rooms_xml = ET.SubElement(data, 'rooms')
         for room in serializable:
@@ -48,4 +45,14 @@ class XMLSerializer(BaseSerializer):
                 student_room.text = student.room.__str__()
 
         data_root = ET.ElementTree(data).getroot()
-        self.data = minidom.parseString(ET.tostring(data_root)).toprettyxml()
+        return minidom.parseString(ET.tostring(data_root)).toprettyxml()
+
+
+class CustomEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, Room):
+            return {'id': o.id, 'name': o.name, 'students': o.students}
+        elif isinstance(o, Student):
+            return {'id': o.id, 'name': o.name, 'room': o.room}
+
+        return super(CustomEncoder, self).default(o)
