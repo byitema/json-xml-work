@@ -1,6 +1,7 @@
 import json
 import xml.etree.ElementTree as ET
 import xml.dom.minidom as minidom
+from entities import Student, Room
 
 
 class BaseSerializer:
@@ -16,9 +17,9 @@ class BaseSerializer:
 
 
 class JSONSerializer(BaseSerializer):
-    def serialize(self, serializable, custom_encoder=None):
+    def serialize(self, serializable):
         rooms_dict = {'rooms': serializable}
-        self.data = json.dumps(rooms_dict, cls=custom_encoder, indent=4)
+        self.data = json.dumps(rooms_dict, cls=CustomEncoder, indent=4)
 
 
 class XMLSerializer(BaseSerializer):
@@ -49,3 +50,13 @@ class XMLSerializer(BaseSerializer):
 
         data_root = ET.ElementTree(data).getroot()
         self.data = minidom.parseString(ET.tostring(data_root)).toprettyxml()
+
+
+class CustomEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, Room):
+            return {'id': o.id, 'name': o.name, 'students': o.students}
+        elif isinstance(o, Student):
+            return {'id': o.id, 'name': o.name, 'room': o.room}
+
+        return super(CustomEncoder, self).default(o)
