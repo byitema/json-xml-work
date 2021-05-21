@@ -1,6 +1,6 @@
 import json
-import xml.etree.ElementTree as ET
 import xml.dom.minidom as minidom
+import xml.etree.ElementTree as ET
 from entities import Student, Room
 
 
